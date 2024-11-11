@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Jobs>
+  <Job>
+  <Job>
+    <JobId>3</JobId>
+    <JobTitle>hr</JobTitle>
+    <CompanyName>ragac</CompanyName>
+    <Location>tbilisi</Location>
+    <JobDescription>asdasd</JobDescription>
+    <Salary>15000</Salary>
+  </Job>
+</Jobs>
