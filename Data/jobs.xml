@@ -1,12 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Jobs>
   <Job>
-  <Job>
     <JobId>3</JobId>
     <JobTitle>hr</JobTitle>
     <CompanyName>ragac</CompanyName>
     <Location>tbilisi</Location>
     <JobDescription>asdasd</JobDescription>
     <Salary>15000</Salary>
+  </Job>
+  <Job>
+    <JobId>1</JobId>
+    <JobTitle>Delivery</JobTitle>
+    <CompanyName>Glovo</CompanyName>
+    <Location>Tbilisi</Location>
+    <JobDescription>Mitanis servisi</JobDescription>
+    <Salary>2500</Salary>
   </Job>
 </Jobs>

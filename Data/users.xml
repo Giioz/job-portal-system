@@ -1,1 +1,17 @@
-﻿
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Users>
+  <User>
+    <UserId>1</UserId>
+    <Email>jobseeker@gmail.com</Email>
+    <PasswordHash>Lpd6HBJGXG+ADc/AqY3r7Hxe7lDtfq7dKNCPF8s8ANY=</PasswordHash>
+    <Salt>de2C/HI1zSXiyJdd2PcvOQ==</Salt>
+    <Role>Seeker</Role>
+  </User>
+  <User>
+    <UserId>2</UserId>
+    <Email>employer@gmail.com</Email>
+    <PasswordHash>fGT1xBGtdQ7OLcf+gimlB/eRa9bX3716abwB1I95XDI=</PasswordHash>
+    <Salt>iKBe7AGdosVEnsDhpfh+Sw==</Salt>
+    <Role>Employer</Role>
+  </User>
+</Users>

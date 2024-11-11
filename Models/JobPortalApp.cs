@@ -119,7 +119,7 @@ namespace JobPortalSystem.Models
     {
         XElement jobsElement = File.Exists(jobsDataFile) ? XElement.Load(jobsDataFile) : new XElement("Jobs");
 
-        XElement newUserElement = new XElement("Job",
+        XElement newJobsElement = new XElement("Job",
             new XElement("JobId", job.JobId),
             new XElement("JobTitle", job.JobTitle),
             new XElement("CompanyName", job.CompanyName),
@@ -128,7 +128,7 @@ namespace JobPortalSystem.Models
             new XElement("Salary", job.Salary)
         );
 
-        jobsElement.Add(newUserElement);
+        jobsElement.Add(newJobsElement);
         jobsElement.Save(jobsDataFile);
         System.Console.WriteLine("saved");
     }
@@ -238,30 +238,37 @@ namespace JobPortalSystem.Models
     }
     public void DisplayJobs()
     {
-        var jobs = LoadJobFromXml();
+        List<Job> jobs = LoadJobFromXml();
         jobs.ForEach(j => j.DisplayJobDetails());
     }
     public void ApplyForJob(int userId, int jobId, string coverLetter)
     {
         int newApplicationId = applications.Count + 1; // Simple incrementing logic for ApplicationId
         DateTime applicationDate = DateTime.Now;
-
-        Application newApplication = new Application(newApplicationId, jobId, userId, coverLetter, applicationDate);
+        var jobs = LoadJobFromXml();
+        var jobExists = jobs.FirstOrDefault(j => j.JobId == jobId);
+        if(jobExists != null)
+        {
+            Application newApplication = new Application(newApplicationId, jobId, userId, coverLetter, applicationDate);
+            applications.Add(newApplication);
+            Console.WriteLine("Your application has been successfully submitted.");
+        }
+        else {
+            System.Console.WriteLine("Job Id is incorrect!");
+        }
         
-        applications.Add(newApplication);
-        Console.WriteLine("Your application has been successfully submitted.");
     }
 
-    // Method to display all applications for a specific job (for Employers)
-    public void DisplayJobApplications(int jobId)
+    // TODO : 
+    public void DisplayJobApplications()
     {
-        // Filter the applications by JobId
-        var jobApplications = applications.Where(a => a.JobId == jobId).ToList();
         var users = LoadUsersFromXml();
-        if (jobApplications.Any())
+        var jobs = LoadJobFromXml();
+        if (applications.Any())
         {
-            Console.WriteLine($"Applications for Job ID {jobId}:");
-            foreach (var application in jobApplications)
+            Console.WriteLine($"All the Applications");
+            
+            foreach (var application in applications)
             {
                 var user = users.FirstOrDefault(u => u.UserId == application.UserId); // Find the user by UserId
                 if (user != null)
@@ -297,12 +304,13 @@ namespace JobPortalSystem.Models
         Console.WriteLine("3. Logout");
     }
 
+    // TODO : create admin user
     public void ShowAdminMenu()
-        {
-            Console.WriteLine("1. View All Users");
-            Console.WriteLine("2. View All Jobs");
-            Console.WriteLine("3. Logout");
-        }
+    {
+        Console.WriteLine("1. View All Users");
+        Console.WriteLine("2. View All Jobs");
+        Console.WriteLine("3. Logout");
+    }
 
     }
 }
