@@ -1,0 +1,15 @@
+/Users/gio/Desktop/Codes /C#/JobPortalSystem/bin/Debug/net8.0/JobPortalSystem
+/Users/gio/Desktop/Codes /C#/JobPortalSystem/bin/Debug/net8.0/JobPortalSystem.deps.json
+/Users/gio/Desktop/Codes /C#/JobPortalSystem/bin/Debug/net8.0/JobPortalSystem.runtimeconfig.json
+/Users/gio/Desktop/Codes /C#/JobPortalSystem/bin/Debug/net8.0/JobPortalSystem.dll
+/Users/gio/Desktop/Codes /C#/JobPortalSystem/bin/Debug/net8.0/JobPortalSystem.pdb
+/Users/gio/Desktop/Codes /C#/JobPortalSystem/obj/Debug/net8.0/JobPortalSystem.GeneratedMSBuildEditorConfig.editorconfig
+/Users/gio/Desktop/Codes /C#/JobPortalSystem/obj/Debug/net8.0/JobPortalSystem.AssemblyInfoInputs.cache
+/Users/gio/Desktop/Codes /C#/JobPortalSystem/obj/Debug/net8.0/JobPortalSystem.AssemblyInfo.cs
+/Users/gio/Desktop/Codes /C#/JobPortalSystem/obj/Debug/net8.0/JobPortalSystem.csproj.CoreCompileInputs.cache
+/Users/gio/Desktop/Codes /C#/JobPortalSystem/obj/Debug/net8.0/JobPortalSystem.sourcelink.json
+/Users/gio/Desktop/Codes /C#/JobPortalSystem/obj/Debug/net8.0/JobPortalSystem.dll
+/Users/gio/Desktop/Codes /C#/JobPortalSystem/obj/Debug/net8.0/refint/JobPortalSystem.dll
+/Users/gio/Desktop/Codes /C#/JobPortalSystem/obj/Debug/net8.0/JobPortalSystem.pdb
+/Users/gio/Desktop/Codes /C#/JobPortalSystem/obj/Debug/net8.0/JobPortalSystem.genruntimeconfig.cache
+/Users/gio/Desktop/Codes /C#/JobPortalSystem/obj/Debug/net8.0/ref/JobPortalSystem.dll
