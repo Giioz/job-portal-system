@@ -1,2 +1,7 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using JobPortalSystem;
+using JobPortalSystem.Models;
+
+JobPortalApp jobPortal = new JobPortalApp();
+
+jobPortal.CreateNewJob();
+jobPortal.DisplayJobs();
