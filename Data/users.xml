@@ -5,13 +5,15 @@
     <Email>jobseeker@gmail.com</Email>
     <PasswordHash>Lpd6HBJGXG+ADc/AqY3r7Hxe7lDtfq7dKNCPF8s8ANY=</PasswordHash>
     <Salt>de2C/HI1zSXiyJdd2PcvOQ==</Salt>
-    <Role>Seeker</Role>
+    <Role>Employer</Role>
+    <BanStatus>True</BanStatus>
   </User>
   <User>
-    <UserId>2</UserId>
-    <Email>employer@gmail.com</Email>
-    <PasswordHash>fGT1xBGtdQ7OLcf+gimlB/eRa9bX3716abwB1I95XDI=</PasswordHash>
-    <Salt>iKBe7AGdosVEnsDhpfh+Sw==</Salt>
-    <Role>Employer</Role>
+    <UserId>3</UserId>
+    <Email>admin@gmail.com</Email>
+    <PasswordHash>13m9fmRXB2ghNFyLL2mgUfnBDlhnJMZKnv2i//fSgSM=</PasswordHash>
+    <Salt>rztcBYDS3CRKdMY4xxInqQ==</Salt>
+    <Role>Admin</Role>
+    <BanStatus>false</BanStatus>
   </User>
 </Users>
