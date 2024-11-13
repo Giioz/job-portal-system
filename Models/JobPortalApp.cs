@@ -1,14 +1,17 @@
+using System.Numerics;
 using System.Security.Cryptography;
+using System.Xml;
 using System.Xml.Linq;
+using System.Linq;
 
 namespace JobPortalSystem.Models
 {
     public class JobPortalApp
     {
         private List<Job> jobs = new List<Job>();
-        private List<Application> applications = new List<Application>();
     // Paths to the XML files
     private string userDataFile = Path.Combine(Directory.GetCurrentDirectory(), "Data", "users.xml");
+    private string applicationDataFile = Path.Combine(Directory.GetCurrentDirectory(), "Data", "applications.xml");
     private string jobsDataFile = Path.Combine(Directory.GetCurrentDirectory(), "Data", "jobs.xml");
 
         
@@ -60,7 +63,8 @@ namespace JobPortalSystem.Models
                 Email = email,
                 PasswordHash = passwordHash,
                 Salt = Convert.ToBase64String(salt),
-                Role = role
+                Role = role,
+                BanStatus = false 
             };
 
             // Save the new user to XML
@@ -115,6 +119,23 @@ namespace JobPortalSystem.Models
         // Save the XML file
         usersElement.Save(userDataFile);
     }
+ 
+    private void SaveApplicationToXml(Application application)
+    {
+        XElement applicationElement = File.Exists(applicationDataFile) ? XElement.Load(applicationDataFile) : new XElement("Applications");
+
+        XElement newApplicationElement = new XElement("Application",
+            new XElement("ApplicationId", application.ApplicationId),
+            new XElement("JobId", application.JobId),
+            new XElement("UserId", application.UserId),
+            new XElement("CoverLetter", application.CoverLetter),
+            new XElement("ApplicationDate", application.ApplicationDate)
+        );
+
+        applicationElement.Add(newApplicationElement);
+        applicationElement.Save(applicationDataFile);
+
+    }
     private void SaveJobToXml(Job job)
     {
         XElement jobsElement = File.Exists(jobsDataFile) ? XElement.Load(jobsDataFile) : new XElement("Jobs");
@@ -146,7 +167,8 @@ namespace JobPortalSystem.Models
                         Email = (string)userElement.Element("Email"),
                         PasswordHash = (string)userElement.Element("PasswordHash"),
                         Salt = (string)userElement.Element("Salt"),
-                        Role = (string)userElement.Element("Role")
+                        Role = (string)userElement.Element("Role"),
+                        BanStatus = (bool)userElement.Element("BanStatus")
                     };
 
         return users.ToList();
@@ -169,6 +191,25 @@ namespace JobPortalSystem.Models
                     };
 
         return jobs.ToList();
+    }
+
+    private List<Application> LoadApplicationsFromXml()
+    {
+        if(!File.Exists(applicationDataFile)) return new List<Application>();
+
+        XElement applicationElement = XElement.Load(applicationDataFile);
+
+        var applications = applicationElement
+        .Elements("Application")  
+        .Select(appElement => new Application
+                                    (
+                                    (int)appElement.Element("ApplicationId"),
+                                    (int)appElement.Element("JobId"),
+                                    (int)appElement.Element("UserId"),
+                                    (string)appElement.Element("CoverLetter"),
+                                    (DateTime)appElement.Element("ApplicationDate")
+                                    ));
+        return applications.ToList();
     }
     // User login
     public User Login()
@@ -243,6 +284,7 @@ namespace JobPortalSystem.Models
     }
     public void ApplyForJob(int userId, int jobId, string coverLetter)
     {
+        var applications = LoadApplicationsFromXml();
         int newApplicationId = applications.Count + 1; // Simple incrementing logic for ApplicationId
         DateTime applicationDate = DateTime.Now;
         var jobs = LoadJobFromXml();
@@ -251,6 +293,7 @@ namespace JobPortalSystem.Models
         {
             Application newApplication = new Application(newApplicationId, jobId, userId, coverLetter, applicationDate);
             applications.Add(newApplication);
+            SaveApplicationToXml(newApplication);
             Console.WriteLine("Your application has been successfully submitted.");
         }
         else {
@@ -264,6 +307,7 @@ namespace JobPortalSystem.Models
     {
         var users = LoadUsersFromXml();
         var jobs = LoadJobFromXml();
+        var applications = LoadApplicationsFromXml();
         if (applications.Any())
         {
             Console.WriteLine($"All the Applications");
@@ -273,7 +317,7 @@ namespace JobPortalSystem.Models
                 var user = users.FirstOrDefault(u => u.UserId == application.UserId); // Find the user by UserId
                 if (user != null)
                 {
-                    Console.WriteLine($"User: {user.Email} - Cover Letter: {application.CoverLetter} - Applied on: {application.ApplicationDate}");
+                    Console.WriteLine($"Job Id: {application.JobId} - User: {user.Email} - Cover Letter: {application.CoverLetter} - Applied on: {application.ApplicationDate}");
                 }
             }
         }
@@ -283,6 +327,17 @@ namespace JobPortalSystem.Models
         }
     }
 
+    public void DisplayUsers()
+    {
+        var users = LoadUsersFromXml();
+        if(users.Any())
+        {
+            foreach (var user in users)
+            {
+                user.DisplayInfo();
+            }
+        }
+    }
     public void ShowMainMenu()
     {
         Console.WriteLine("1. Register");
@@ -304,12 +359,77 @@ namespace JobPortalSystem.Models
         Console.WriteLine("3. Logout");
     }
 
+    // For Admin Users
+    public void DeleteUser(int UserId)
+    {
+        XElement userData = XElement.Load(userDataFile);
+
+        var userToDelete = FindUser(UserId, userData);
+
+        if(userToDelete != null)
+        {
+            userToDelete.Remove();
+            userData.Save(userDataFile);
+            Console.WriteLine($"User with ID {UserId} has been deleted.");
+        }else 
+        {
+            Console.WriteLine($"User with ID {UserId} not found.");
+        }
+        
+    }
+    public void BanUser(int UserId)
+    {
+        XElement userData = XElement.Load(userDataFile);
+
+        var userToBan = FindUser(UserId, userData);
+
+        if(userToBan != null)
+        {
+            userToBan.Element("BanStatus").Value = true.ToString();
+            userData.Save(userDataFile);
+            System.Console.WriteLine($"User with ID {UserId} has been banned.");
+        }else 
+        {
+            System.Console.WriteLine($"User with ID {UserId} not found");
+        }
+    }
+    public void ChangeUserRole(int UserId, string Role)
+    {
+        XElement userData = XElement.Load(userDataFile);
+
+        var userToChangeRole = FindUser(UserId, userData);
+
+        if(userToChangeRole != null)
+        {   
+            userToChangeRole.Element("Role").Value = Role;
+            userData.Save(userDataFile);
+            System.Console.WriteLine($"User with ID {UserId}'s Role has changed to {Role}.");
+        }else 
+        {
+            System.Console.WriteLine($"User with ID {UserId} not found");
+        }
+    }
+
+    public XElement FindUser(int UserId, XElement userData)
+    {
+        var foundUser = userData.Elements("User").FirstOrDefault(u => (int)u.Element("UserId") == UserId);
+
+        return foundUser;
+    }
     // TODO : create admin user
     public void ShowAdminMenu()
     {
         Console.WriteLine("1. View All Users");
         Console.WriteLine("2. View All Jobs");
         Console.WriteLine("3. Logout");
+    }
+
+    public void AdminUserOptions()
+    {
+        Console.WriteLine("1. Delete User");
+        Console.WriteLine("2. Ban User");
+        Console.WriteLine("3. Change Role To User");
+        Console.WriteLine("4. Back To Menu");
     }
 
     }
