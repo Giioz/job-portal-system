@@ -8,7 +8,11 @@ namespace JobPortalSystem.Models
         public string PasswordHash { get; set; }
         public string Role { get; set; }
         public string Salt { get; set; } // Store the salt as a byte array
+        public bool BanStatus { get; set; } = false;
 
-        
+        public void DisplayInfo()
+        {
+            System.Console.WriteLine($"User Id : {UserId} - Email Adress : {Email} - Role : {Role}");
+        }
     }
 }
