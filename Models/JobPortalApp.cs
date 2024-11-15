@@ -413,10 +413,32 @@ namespace JobPortalSystem.Models
     public XElement FindUser(int UserId, XElement userData)
     {
         var foundUser = userData.Elements("User").FirstOrDefault(u => (int)u.Element("UserId") == UserId);
-
+        
         return foundUser;
     }
-    // TODO : create admin user
+    public void DeleteJob(int JobId)
+    {
+        XElement jobsData = XElement.Load(jobsDataFile);
+
+        var jobToDelete = FindJob(JobId, jobsData);
+
+        if(jobToDelete != null)
+        {
+            jobToDelete.Remove();
+            jobsData.Save(jobsDataFile);
+            Console.WriteLine($"Job with ID {JobId} has been deleted.");
+        }else
+        {
+            Console.WriteLine($"Job with ID {JobId} not found.");
+        }
+    }
+    public XElement FindJob(int JobId, XElement jobsData)
+    {
+        var foundJob = jobsData.Elements("Job").FirstOrDefault(j => (int)j.Element("JobId") == JobId);
+
+        return foundJob;
+    }
+
     public void ShowAdminMenu()
     {
         Console.WriteLine("1. View All Users");
@@ -431,7 +453,11 @@ namespace JobPortalSystem.Models
         Console.WriteLine("3. Change Role To User");
         Console.WriteLine("4. Back To Menu");
     }
-
+    public void AdminJobOptions()
+    {
+        Console.WriteLine("1. Delete Job");
+        Console.WriteLine("2. Back To Menu");
+    }
     }
 }
 
