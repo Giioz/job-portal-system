@@ -33,7 +33,7 @@ while(run)
                             AdminOptions();
                     }else
                     {
-                        System.Console.WriteLine("You Have Been Banned.");
+                        Console.WriteLine("You Have Been Banned.");
                         break;
                     }
                 }
@@ -99,7 +99,7 @@ void AdminOptions()
     {
         case "1":
             jobPortal.DisplayUsers();
-            System.Console.WriteLine("Choose User with ID :");
+            Console.WriteLine("Choose User with ID :");
             int userId = int.Parse(Console.ReadLine());
             jobPortal.AdminUserOptions(); 
             var cmd = Console.ReadLine();
@@ -110,7 +110,7 @@ void AdminOptions()
                 jobPortal.BanUser(userId);
             else if(cmd == "3")
             {
-                System.Console.WriteLine("Role : 1. Job Seeker, 2. Employer, 3. Admin");
+                Console.WriteLine("Role : 1. Job Seeker, 2. Employer, 3. Admin");
                 var roleCode = Console.ReadLine();
                 string role = (roleCode == "1") ? "Seeker" : (roleCode == "2") ? "Employer" : (roleCode == "3") ? "Admin" : "undefined";
                 jobPortal.ChangeUserRole(userId, role);
@@ -121,8 +121,19 @@ void AdminOptions()
             
         case "2":
             jobPortal.DisplayJobs();
+            jobPortal.AdminJobOptions();
+            var inp = Console.ReadLine();
+            if(inp == "1")
+            {
+                Console.WriteLine("Select Job By ID");
+                var id = int.Parse(Console.ReadLine());
+                jobPortal.DeleteJob(id);
+            }else if(inp == "2")
+                break;
             break;
         case "3":
+            auth = false;
             break;
+        
     }
 }
